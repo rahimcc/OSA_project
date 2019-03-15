@@ -1,0 +1,23 @@
++ rm -f f1.tmp f2.tmp
++ cat
++ chmod +x script.tmp
++ N=24
++ N=18
++ rm -f f1.tmp
++ ./detecter -i1 -l18 ./script.tmp
+++ seq 1 6
++ for i in $(seq 1 6)
++ cat f1.tmp
++ for i in $(seq 1 6)
++ cat f1.tmp
++ for i in $(seq 1 6)
++ cat f1.tmp
++ for i in $(seq 1 6)
++ cat f1.tmp
++ for i in $(seq 1 6)
++ cat f1.tmp
++ for i in $(seq 1 6)
++ cat f1.tmp
++ ./detecter -i1 -l2 ./script.tmp
++ cmp -s f2.tmp f3.tmp
++ exit 0
