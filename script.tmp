@@ -1,8 +1,0 @@
-#!/bin/sh
-    if [ -f f1.tmp ]
-    then
-	rm f1.tmp
-	exit 0
-    else
-	exit 1
-    fi
