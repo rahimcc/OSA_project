@@ -1,4 +1,15 @@
 
+/*
+    OPERATING SYSTEM ARCHITECTURE COURSE PROJECT 
+
+SARA SHAMILOVA 
+RAHIM SHARIFOV
+
+MARCH 2019
+
+*/
+
+
 #include <stdio.h>
 #include <sys/wait.h>
 #include <unistd.h>

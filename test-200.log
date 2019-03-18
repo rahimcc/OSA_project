@@ -1,4 +1,4 @@
-+ rm -f f1-fait.tmp f1.tmp f2.tmp f3.tmp f4.tmp script.tmp
++ rm -f f2.tmp f3.tmp script.tmp
 + DN=/dev/null
 + INTERV=5
 + ./detecter -i 5000 -t %s -l 2 cat /dev/null

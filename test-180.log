@@ -2,11 +2,11 @@
 + dd if=/dev/urandom bs=1000k count=1 of=f1.tmp
 1+0 records in
 1+0 records out
-1024000 bytes (1,0 MB, 1000 KiB) copied, 0,0231339 s, 44,3 MB/s
+1024000 bytes (1,0 MB, 1000 KiB) copied, 0,0103897 s, 98,6 MB/s
 + dd if=/dev/urandom bs=1000k count=1 of=f2.tmp
 1+0 records in
 1+0 records out
-1024000 bytes (1,0 MB, 1000 KiB) copied, 0,0130046 s, 78,7 MB/s
+1024000 bytes (1,0 MB, 1000 KiB) copied, 0,0114745 s, 89,2 MB/s
 + cat
 + chmod +x script.tmp
 + cat f1.tmp f2.tmp
@@ -15,7 +15,7 @@
 + dd if=/dev/urandom bs=12345 count=1 of=f1.tmp
 1+0 records in
 1+0 records out
-12345 bytes (12 kB, 12 KiB) copied, 0,000371981 s, 33,2 MB/s
+12345 bytes (12 kB, 12 KiB) copied, 0,000525276 s, 23,5 MB/s
 + cp f1.tmp f2.tmp
 + /usr/bin/printf '\x00 1'
 + /usr/bin/printf '\x00 2'
