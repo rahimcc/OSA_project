@@ -1,0 +1,28 @@
++ rm -f f1.tmp f2.tmp f3.tmp script.tmp
++ dd if=/dev/urandom bs=1000k count=1 of=f1.tmp
+1+0 records in
+1+0 records out
+1024000 bytes (1,0 MB, 1000 KiB) copied, 0,00480317 s, 213 MB/s
++ dd if=/dev/urandom bs=1000k count=1 of=f2.tmp
+1+0 records in
+1+0 records out
+1024000 bytes (1,0 MB, 1000 KiB) copied, 0,00490921 s, 209 MB/s
++ cat
++ chmod +x script.tmp
++ cat f1.tmp f2.tmp
++ ./detecter -i1 -l2 ./script.tmp
++ cmp -s f3.tmp f4.tmp
++ dd if=/dev/urandom bs=12345 count=1 of=f1.tmp
+1+0 records in
+1+0 records out
+12345 bytes (12 kB, 12 KiB) copied, 0,000133105 s, 92,7 MB/s
++ cp f1.tmp f2.tmp
++ /usr/bin/printf '\x00 1'
++ /usr/bin/printf '\x00 2'
++ rm -f f1-fait.tmp
++ cat
++ chmod +x script.tmp
++ cat f1.tmp f2.tmp
++ ./detecter -i1 -l2 ./script.tmp
++ cmp -s f3.tmp f4.tmp
++ exit 0
