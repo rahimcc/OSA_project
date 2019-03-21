@@ -1,0 +1,140 @@
+        -:    0:Source:DetecLib.c
+        -:    0:Programs:2
+        -:    1:/*
+        -:    2:    OPERATING SYSTEM ARCHITECTURE COURSE PROJECT 
+        -:    3:
+        -:    4:SARA SHAMILOVA 
+        -:    5:RAHIM SHARIFOV
+        -:    6:
+        -:    7:MARCH 2019
+        -:    8:
+        -:    9:*/
+        -:   10:
+        -:   11:#include <stdio.h>
+        -:   12:#include <stdlib.h>
+        -:   13:#include "DetecLib.h"
+        -:   14:#include <time.h>
+        -:   15:#include <unistd.h>
+        -:   16:#include <sys/wait.h>
+        -:   17:#include <stdint.h>
+        -:   18:#include <math.h>
+        -:   19:
+        -:   20:
+        -:   21:char *OLD_OTPT=NULL;   // globally decleared variable that is accessible to all functions to store last modified output 
+        -:   22:char *NEW_OTPT=NULL;  // variable to store temporarily last output 
+        -:   23:
+        -:   24:int NEW_SIZE=0;   // size of text inside  NEW_OTPT
+        -:   25:int OLD_SIZE=0;   // size of text inside OLD_OTPT 
+        -:   26:
+        -:   27://int rCounter=0;
+        -:   28:
+        4:   29:void equalize (char *old  , char *new ){  // function that takes two pointers 
+     4480:   30:    for (int i=0;i< NEW_SIZE;i++){          // and equalize one's content to another 
+     4476:   31:        old[i]=new[i];                   //  character by character 
+        -:   32:    }
+        4:   33:}
+        -:   34:
+        -:   35:
+        -:   36:
+        5:   37:int get_time(char *format){    //function to print local time 
+        5:   38:    char buf[BUF_LEN] = {0};        //to store formatted local time that returned by function strftime 
+        -:   39:
+        5:   40:    time_t rawtime = time(NULL);    // function time() returns number of seconds since epoch (1970), and assigns it to rawtime 
+        5:   41:         if (rawtime == -1) {   
+    #####:   42:         puts("The time() function failed");  //condition if function time() is failed 
+    #####:   43:         return 1;
+        -:   44:         }
+        -:   45:
+        -:   46:    struct tm *ptm;
+        5:   47:    ptm= localtime(&rawtime);        //function localtime takes number of seconds since epoch and returns local time inside type struct tm ptm 
+        5:   48:    strftime(buf, BUF_LEN, format, ptm); // strftime takes variable ptm which is local time, and format of representation of time, and puts formatted time inside buf
+        5:   49:    puts(buf);                    //prints formatted local time 
+        5:   50:    return 0;
+        -:   51:}
+        -:   52:
+        -:   53:
+        5:   54:int check (char* old , char* New ){     //checks whether output has been changed, if output has changed return 1, else return 0
+        -:   55:
+        5:   56:    if (OLD_SIZE!=NEW_SIZE || NEW_SIZE==0 ){        //checks sizes of new output and old output, if size has been changed output has been changed   
+        1:   57:        OLD_SIZE=NEW_SIZE;
+        1:   58:        if (OLD_SIZE!=0)        
+        1:   59:        OLD_OTPT=realloc(OLD_OTPT,MAX+OLD_SIZE);   //reallocation of old output with  new size  
+        1:   60:        return 1;                 
+        -:   61:    }else {
+     1674:   62:            for (int i=0;i<OLD_SIZE;i++) {        //else, if  sizes are the same, check character by character   
+     1673:   63:                if (old[i]!=New[i]) return 1;   
+        -:   64:            }
+        -:   65:    } 
+        1:   66:    return 0;
+        -:   67:}
+        -:   68:
+        -:   69:
+        5:   70:int launch_process(int exitValue , char**  args){   //executes command given by user stores output 
+        -:   71:    int fd;     // value returned by function fork()
+        -:   72:    int tube[2];    // to create pipe
+        -:   73:    int exitCode;   // exit value that is returned by command 
+        5:   74:    pipe(tube);             // creating pipe to communicate between processes 
+        -:   75:    int buffSize;     //buffer to store number of bytes read from pipes in each call  
+        -:   76:
+        -:   77:      // OLD_OTPT=malloc(MAX*sizeof(char));
+        5:   78:    NEW_OTPT=malloc(MAX*sizeof(char));  // creating temporary place to store new output with size of MAX
+        -:   79:
+        5:   80:        if ((fd=fork())==-1){                // condition if fork fails
+    #####:   81:            printf("Error in forking\n");
+    #####:   82:            return 0;
+        -:   83:        }
+       10:   84:        if (fd==0){                 //child process
+        5:   85:            close(tube[0]);   //closing input side of pipe, as we only need output side
+        5:   86:            dup2 (tube[1],1);      //duplicating standart output to output side of pipe 
+        5:   87:            close(tube[1]);     //closing output side of pipe, as standart output already points to same place
+        -:   88:            
+    #####:   89:            execvp (args[0], args); //executing command , output goes output side of pipe and process ends 
+        -:   90:
+        -:   91:        }else {   //parent process 
+        -:   92:
+        5:   93:            close(tube[1]);     //closing output side of process , as we only need input side 
+        5:   94:            dup2(tube[0],0);   //duplication standart input to input of pipe 
+        5:   95:            close(tube[0]);     // closing input side of pipe, as standart input already point to the same place
+        -:   96:        
+        -:   97:        
+       55:   98:            while((buffSize=read(0,NEW_OTPT+NEW_SIZE,MAX))>0){  // reads bytes with size MAX in each call , writes it to end of NEW_OTPT
+       45:   99:                 NEW_SIZE+=buffSize;    // sums sizes in each call which at the end gives total size of new output  
+       45:  100:                 if (buffSize==MAX)         
+       40:  101:                     NEW_OTPT=realloc(NEW_OTPT,MAX+NEW_SIZE); // if MAX size of bytes is read, it reallocates memory with new size 
+        -:  102:            }
+        -:  103:            
+        -:  104:
+        5:  105:            wait(&exitCode);     // waits child process to finish, store its state in variable exitCode
+        -:  106:
+        5:  107:            if(check(OLD_OTPT,NEW_OTPT)){ // checks whether old output and new output is the same 
+        4:  108:                equalize(OLD_OTPT, NEW_OTPT); // if not equalizes new out to old output 
+        4:  109:                OLD_OTPT[NEW_SIZE]='\0'; 
+        4:  110:                write(1,OLD_OTPT,OLD_SIZE);     //  prints old output 
+        -:  111:          
+        4:  112:                if (exitValue) {    // prints exit value of command, if -c option is given 
+    #####:  113:                    write(1,"exit ",5);
+    #####:  114:                    char tmp[2]={0x0};
+    #####:  115:                     int i=WEXITSTATUS(exitCode);
+    #####:  116:                    sprintf(tmp,"%d", i);
+    #####:  117:                    tmp[1]='\n';
+    #####:  118:                    write(1, tmp, sizeof(tmp));
+        -:  119:                  
+        -:  120:                } 
+        -:  121:            } 
+        -:  122:    
+        5:  123:            free(NEW_OTPT); // frees temporary memory 
+        5:  124:            NEW_SIZE=0;     
+        -:  125:        } 
+        5:  126:    return 0;    
+        -:  127:}
+        -:  128:
+        1:  129:void launch(int limit , int EXIT, char** args , int interval , char* format) {
+        1:  130:    OLD_OTPT= malloc(MAX*sizeof(char));  // allocates memory to store output 
+        6:  131:    for(int i = 0; i < limit; i++){   
+        5:  132:        launch_process( EXIT, args);   // executes command and prints exit value if needed 
+        5:  133:        if (format!=NULL) get_time(format); // if time format is given , print time 
+        5:  134:        usleep(interval);   // sleep for given interval 
+        -:  135:    }
+        1:  136:    free(OLD_OTPT); // frees memory 
+        -:  137:    
+        1:  138:}

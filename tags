@@ -1,0 +1,19 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BUF_LEN	DetecLib.h	6;"	d
+MAX	DetecLib.h	5;"	d
+NEW_OTPT	DetecLib.c	/^char *NEW_OTPT=NULL;  \/\/ variable to store temporarily last output $/;"	v
+NEW_SIZE	DetecLib.c	/^int NEW_SIZE=0;   \/\/ size of text inside  NEW_OTPT$/;"	v
+OLD_OTPT	DetecLib.c	/^char *OLD_OTPT=NULL;   \/\/ globally decleared variable that is accessible to all functions to store last modified output $/;"	v
+OLD_SIZE	DetecLib.c	/^int OLD_SIZE=0;   \/\/ size of text inside OLD_OTPT $/;"	v
+check	DetecLib.c	/^int check (char* old , char* New ){     \/\/checks whether output has been changed, if output has changed return 1, else return 0$/;"	f
+detec	DetecLib.h	2;"	d
+equalize	DetecLib.c	/^void equalize (char *old  , char *new ){  \/\/ function that takes two pointers $/;"	f
+get_time	DetecLib.c	/^int get_time(char *format){    \/\/function to print local time $/;"	f
+launch	DetecLib.c	/^void launch(int limit , int EXIT, char** args , int interval , char* format) {$/;"	f
+launch_process	DetecLib.c	/^int launch_process(int exitValue , char**  args){   \/\/executes command given by user stores output $/;"	f
+main	detecter.c	/^int main (int argc, char* argv[]){   $/;"	f
