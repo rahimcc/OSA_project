@@ -128,7 +128,7 @@ int launch_process(int exitValue , char**  args){   //executes command given by 
 
 void launch(int limit , int EXIT, char** args , int interval , char* format) {
     OLD_OTPT= malloc(MAX*sizeof(char));  // allocates memory to store output 
-    for(int i = 0; i < limit; i++){   
+    for(int i = 0; i !=limit; i++){   
         launch_process( EXIT, args);   // executes command and prints exit value if needed 
         if (format!=NULL) get_time(format); // if time format is given , print time 
         usleep(interval);   // sleep for given interval 
