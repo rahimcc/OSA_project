@@ -1,2 +1,20 @@
+absent
 exit 0
+present
+exit 1
+absent
+exit 0
+present
+exit 1
+absent
+exit 0
+present
+exit 1
+absent
+exit 0
+present
+exit 1
+absent
+exit 0
+present
 exit 1
