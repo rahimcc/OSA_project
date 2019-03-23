@@ -1,8 +1,0 @@
-#!/bin/sh
-    # script pour faire un changement à chaque fois
-    F=f1.tmp
-    if [ -f $F ]
-    then echo "present" ; rm $F ; r=1
-    else echo "absent" ; touch $F ; r=0
-    fi
-    exit $r
