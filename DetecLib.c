@@ -26,12 +26,11 @@ int OLD_SIZE=0;   // size of text inside OLD_OTPT
 
 //int rCounter=0;
 
-void equalize (char *old  , char *new ){  // function that takes two pointers 
+void equalize (void){  // function that takes two pointers 
     for (int i=0;i< NEW_SIZE;i++){          // and equalize one's content to another 
-        old[i]=new[i];                   //  character by character 
+        OLD_OTPT[i]=NEW_OTPT[i];                   //  character by character 
     }
 }
-
 
 
 int get_time(char *format){    //function to print local time 
@@ -51,7 +50,7 @@ int get_time(char *format){    //function to print local time
 }
 
 
-int check (char* old , char* New ){     //checks whether output has been changed, if output has changed return 1, else return 0
+int check (void){     //checks whether output has been changed, if output has changed return 1, else return 0
 
     if (OLD_SIZE!=NEW_SIZE || NEW_SIZE==0 ){        //checks sizes of new output and old output, if size has been changed output has been changed   
         OLD_SIZE=NEW_SIZE;
@@ -60,7 +59,7 @@ int check (char* old , char* New ){     //checks whether output has been changed
         return 1;                 
     }else {
             for (int i=0;i<OLD_SIZE;i++) {        //else, if  sizes are the same, check character by character   
-                if (old[i]!=New[i]) return 1;   
+                if (OLD_OTPT[i]!=NEW_OTPT[i]) return 1;   
             }
     } 
     return 0;
@@ -104,12 +103,12 @@ int launch_process(int exitValue , char**  args){   //executes command given by 
 
             wait(&exitCode);     // waits child process to finish, store its state in variable exitCode
 
-            if(check(OLD_OTPT,NEW_OTPT)){ // checks whether old output and new output is the same 
-                equalize(OLD_OTPT, NEW_OTPT); // if not equalizes new out to old output 
+            if(check()){ // checks whether old output and new output is the same 
+                equalize(); // if not equalizes new out to old output 
                 OLD_OTPT[NEW_SIZE]='\0'; 
                 write(1,OLD_OTPT,OLD_SIZE);     //  prints old output 
           
-                if (exitValue) {    // prints exit value of command, if -c option is given 
+                if (exitValue){    // prints exit value of command, if -c option is given 
                     write(1,"exit ",5);
                     char tmp[2]={0x0};
                      int i=WEXITSTATUS(exitCode);
@@ -119,7 +118,6 @@ int launch_process(int exitValue , char**  args){   //executes command given by 
                   
                 } 
             } 
-    
             free(NEW_OTPT); // frees temporary memory 
             NEW_SIZE=0;     
         } 
@@ -127,12 +125,15 @@ int launch_process(int exitValue , char**  args){   //executes command given by 
 }
 
 void launch(int limit , int EXIT, char** args , int interval , char* format) {
+    
     OLD_OTPT= malloc(MAX*sizeof(char));  // allocates memory to store output 
+    
     for(int i = 0; i !=limit; i++){   
         launch_process( EXIT, args);   // executes command and prints exit value if needed 
         if (format!=NULL) get_time(format); // if time format is given , print time 
         usleep(interval);   // sleep for given interval 
     }
+    
     free(OLD_OTPT); // frees memory 
     
 }
