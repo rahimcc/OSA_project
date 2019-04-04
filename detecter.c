@@ -4,6 +4,7 @@
 
 SARA SHAMILOVA 
 RAHIM SHARIFOV
+SABINA HADJIMURADOVA
 
 MARCH 2019
 
@@ -16,9 +17,9 @@ MARCH 2019
 #include <stdlib.h>
 #include <getopt.h>
 #include <time.h>
-#include "DetecLib.h"
 #include <math.h>
 #include <limits.h>
+#include "DetecLib.h"
 
 
 int main (int argc, char* argv[]){   
@@ -70,7 +71,7 @@ char option;   // option that getopt takes from command line at a time
         }   
     } 
     
-    
+
    
     if (argv[optind]==NULL){  
         printf("--null program\n"); //Program exits when no command is given to execute 
