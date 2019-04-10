@@ -34,6 +34,23 @@ void equalize (void){  // function that takes two pointers
 }
 
 
+
+int check (void){     //checks whether output has been changed, if output has changed return 1, else return 0
+
+    if (OLD_SIZE!=NEW_SIZE || NEW_SIZE==0 ){        //checks sizes of new output and old output, if size has been changed output has been changed   
+        OLD_SIZE=NEW_SIZE;
+        if (OLD_SIZE!=0)        
+        OLD_OTPT=realloc(OLD_OTPT,MAX+OLD_SIZE);   //reallocation of old output with  new size  
+        return 1;                 
+    }else {
+            for (int i=0;i<OLD_SIZE;i++) {        //else, if  sizes are the same, check character by character   
+                if (OLD_OTPT[i]!=NEW_OTPT[i]) return 1;   
+            }
+    } 
+    return 0;
+}
+
+
 int get_time(char *format){    //function to print local time 
     char buf[BUF_LEN] = {0};        //to store formatted local time that returned by function strftime 
 
@@ -50,21 +67,6 @@ int get_time(char *format){    //function to print local time
     return 0;
 }
 
-
-int check (void){     //checks whether output has been changed, if output has changed return 1, else return 0
-
-    if (OLD_SIZE!=NEW_SIZE || NEW_SIZE==0 ){        //checks sizes of new output and old output, if size has been changed output has been changed   
-        OLD_SIZE=NEW_SIZE;
-        if (OLD_SIZE!=0)        
-        OLD_OTPT=realloc(OLD_OTPT,MAX+OLD_SIZE);   //reallocation of old output with  new size  
-        return 1;                 
-    }else {
-            for (int i=0;i<OLD_SIZE;i++) {        //else, if  sizes are the same, check character by character   
-                if (OLD_OTPT[i]!=NEW_OTPT[i]) return 1;   
-            }
-    } 
-    return 0;
-}
 
 
 int launch_process(int exitValue , char**  args){   //executes command given by user stores output 

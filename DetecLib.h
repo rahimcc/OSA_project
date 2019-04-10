@@ -7,8 +7,8 @@
 
 
 int get_time(char *format);
-int check (char* old , char* New );
+int check (void );
 int launch_process(int exitValue , char** args);
-void equalize (char *old  , char *new );
+void equalize (void);
 void launch(int limit , int EXIT, char** args , int interval , char* format);
 #endif
