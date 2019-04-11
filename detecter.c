@@ -30,7 +30,7 @@ int main (int argc, char* argv[]){
     }
 
 char *format=NULL;    // time format that is to be printed, NULL by default that is time is not going to be printed 
-int  interval=10000;  //interval between two consecutive launch in millisecond, 10000 by default that is 10 seconds between each launch 
+int  interval=10000*1000;  //interval between two consecutive launch in millisecond, 10000 by default that is 10 seconds between each launch 
 int  limit=-1;      // limit which is number of times that program is going to be executed, -1 by default that is command is going to be executed infinite times 
 int  EXIT=0;    //variable to check the condition whether print exit value, 0 by default that is exit value is not going to be printed 
 char option;   // option that getopt takes from command line at a time                                          
